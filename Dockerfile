@@ -1,5 +1,5 @@
 FROM node:alpine
-LABEL maintainer "Chris Snyder" <34378288+maliciousactor@users.noreply.github.com>
+LABEL maintainer "Christopher Snyder" <34378288+maliciousactor@users.noreply.github.com>
 
 # install build dependencies
 RUN set -eux; \
