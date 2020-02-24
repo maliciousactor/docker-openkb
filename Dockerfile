@@ -1,21 +1,32 @@
-FROM node:10.16.3-alpine as builder
-RUN apk --no-cache add python make g++
+FROM node:alpine
+LABEL maintainer "Chris Snyder" <34378288+maliciousactor@users.noreply.github.com>
+
+# install build dependencies
+RUN set -eux; \
+    apk add --no-cache --virtual .build-dependencies \
+        build-base \
+        python
+
+# copy openkb source
+COPY locales/ /var/openKB/locales/
+COPY public/ /var/openKB/public/
+COPY routes/ /var/openKB/routes/
+COPY views/ /var/openKB/views/
+COPY config/ /var/openKB/config/
+COPY app.js /var/openKB/
+COPY package.json /var/openKB/
+
+# install openkb
 WORKDIR /var/openKB
-COPY package* .
 RUN npm install
 
-FROM node:10.16.3-alpine
-WORKDIR /var/openKB
-COPY package.json .
-COPY locales/ locales/
-COPY public/ public/
-COPY routes/ routes/
-COPY views/ views/
-COPY config/ config/
-COPY app.js .
-COPY --from=builder /var/openKB/node_modules node_modules
+# clean image
+RUN apk del --no-network .build-dependencies
 
+# set data volume
 VOLUME /var/openKB/data
 
+# openkb available on port 4444
 EXPOSE 4444
+
 ENTRYPOINT ["npm", "start"]
