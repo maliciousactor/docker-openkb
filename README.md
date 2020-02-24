@@ -58,5 +58,5 @@ As such, it is strongly recommended to place this behind a proxy, such as nginx,
 Build the Docker image from source instead of pulling it from Docker Hub:
 
     $ git clone https://github.com/maliciousactor/docker-openkb docker-openkb
-    $ cd openkb
+    $ cd docker-openkb
     $ docker build -t maliciousactor/openkb .
